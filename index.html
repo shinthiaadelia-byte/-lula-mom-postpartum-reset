@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#344b40">
+<meta name="description" content="Lula & Mom — postpartum reset, milk supply tracker, dan meal plan 30 hari.">
+<link rel="manifest" href="/manifest.json">
+<title>Lula & Mom — Postpartum Reset</title>
+<style>
+:root{--forest:#344b40;--sage:#809889;--pale:#e8eee8;--cream:#f7f5ef;--paper:#fffefa;--ink:#26352d;--muted:#78837b;--line:#e6e8e1;--rose:#d9b8ad;--gold:#c6a36a}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding-bottom:calc(76px + env(safe-area-inset-bottom))}
+header{background:var(--forest);color:white;padding:24px 20px 20px;border-radius:0 0 25px 25px}
+.eyebrow{font-size:10px;letter-spacing:2px;color:#d9e4dc;font-weight:700}.brand{font-family:Georgia,serif;font-size:28px;margin:7px 0 4px}.sub{font-size:12px;color:#d9e4dc}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px}.stat{background:#ffffff18;border:1px solid #ffffff18;border-radius:13px;padding:10px}.stat small{display:block;color:#d9e4dc;font-size:10px}.stat strong{display:block;font-size:19px;margin-top:4px}
+main{max-width:720px;margin:auto;padding:16px}.tabs{position:fixed;z-index:5;bottom:0;left:0;right:0;background:#fffefaee;backdrop-filter:blur(14px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:8px 6px calc(8px + env(safe-area-inset-bottom))}.tab{border:0;background:none;color:var(--muted);font-size:10px;padding:7px 2px;display:flex;flex-direction:column;align-items:center;gap:4px}.tab span{font-size:19px}.tab.active{color:var(--forest);font-weight:700}
+.panel{display:none}.panel.active{display:block}.section-title{font:22px Georgia,serif;margin:8px 0 4px}.muted{color:var(--muted);font-size:12px;line-height:1.5}.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:15px;margin:12px 0;box-shadow:0 3px 12px #26352d08}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.label{font-size:11px;color:var(--muted);display:block;margin-bottom:6px}input,textarea,select{font:inherit;color:var(--ink);background:#fbfbf7;border:1px solid var(--line);border-radius:10px;padding:11px;width:100%;min-width:0}input[type=checkbox]{width:18px;height:18px;accent-color:var(--forest)}button.primary{background:var(--forest);color:white;border:0;border-radius:12px;padding:12px 16px;font-weight:650;width:100%;margin-top:10px}button.secondary{background:var(--pale);color:var(--forest);border:0;border-radius:10px;padding:9px 12px;font-weight:600}.pill{display:inline-block;background:var(--pale);color:var(--forest);border-radius:99px;padding:5px 9px;font-size:10px;font-weight:700}.meal{padding:11px 0;border-bottom:1px solid var(--line)}.meal:last-child{border:0}.meal b{font-size:11px;color:var(--sage);display:block;margin-bottom:4px}.meal p{margin:0;font-size:13px;line-height:1.45}.checkrow{display:flex;align-items:center;gap:9px;padding:8px 0;font-size:13px}.bar{height:8px;background:var(--pale);border-radius:99px;overflow:hidden}.bar>i{display:block;height:100%;background:var(--sage);width:0}.daygrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:12px 0}.daybtn{border:1px solid var(--line);background:white;border-radius:9px;padding:8px 0;font-size:11px;color:var(--ink)}.daybtn.selected{background:var(--forest);color:white;border-color:var(--forest)}.record{border-bottom:1px solid var(--line);padding:10px 0;font-size:12px}.notice{background:#f3eee3;border-radius:13px;padding:12px;font-size:11px;line-height:1.55;color:#655b4b}.footer{font-size:10px;color:var(--muted);line-height:1.5;margin:16px 4px}
+</style>
+</head>
+<body>
+<header>
+ <div class="eyebrow">ADELIAS JOURNEY · WELLNESS</div>
+ <div class="brand">Lula & Mom</div>
+ <div class="sub">Postpartum Reset · a gentle journey back to feeling good 🤍</div>
+ <div class="stats">
+  <div class="stat"><small>STARTING WEIGHT</small><strong id="headStart">68 kg</strong></div>
+  <div class="stat"><small>GOAL WEIGHT</small><strong>63 kg</strong></div>
+  <div class="stat"><small>PROGRAM</small><strong>30 days</strong></div>
+ </div>
+</header>
+<main>
+<section id="tracker" class="panel active">
+ <div class="row"><div><div class="section-title">Daily check-in</div><div class="muted">Pelan-pelan, yang penting konsisten.</div></div><span class="pill" id="dateLabel"></span></div>
+ <div class="card">
+  <div class="row"><b>Hari program</b><select id="daySelect" style="width:110px"></select></div>
+  <div class="grid2" style="margin-top:13px">
+   <div><label class="label">Berat badan (kg)</label><input id="weight" type="number" step=".1" placeholder="68"></div>
+   <div><label class="label">Air minum (gelas)</label><input id="water" type="number" min="0" placeholder="6"></div>
+  </div>
+  <div style="margin-top:14px"><b>Milk supply tracker</b><p class="muted">Catat hasil tiap sesi pumping. DBF tidak termasuk angka ini.</p></div>
+  <div class="grid2">
+   <div><label class="label">Pumping sesi 1 (ml)</label><input id="pump1" type="number" min="0" placeholder="0"></div>
+   <div><label class="label">Pumping sesi 2 (ml)</label><input id="pump2" type="number" min="0" placeholder="0"></div>
+   <div><label class="label">Pumping sesi 3 (ml)</label><input id="pump3" type="number" min="0" placeholder="0"></div>
+   <div><label class="label">Total pumping</label><input id="pumpTotal" readonly value="0 ml"></div>
+  </div>
+  <label class="checkrow"><input id="dbf" type="checkbox"> Sudah DBF hari ini / malam ini</label>
+  <div style="margin-top:12px"><b>Meal checklist</b>
+   <div id="mealChecks">
+    <label class="checkrow"><input type="checkbox" data-meal="0"> Breakfast</label>
+    <label class="checkrow"><input type="checkbox" data-meal="1"> Snack 1</label>
+    <label class="checkrow"><input type="checkbox" data-meal="2"> Lunch</label>
+    <label class="checkrow"><input type="checkbox" data-meal="3"> Snack 2</label>
+    <label class="checkrow"><input type="checkbox" data-meal="4"> Dinner</label>
+   </div>
+  </div>
+  <label class="label" for="notes" style="margin-top:10px">Catatan harian</label><textarea id="notes" rows="3" placeholder="Energi, haid, kondisi payudara, pola menyusu Lula..."></textarea>
+  <button class="primary" id="saveDay">Simpan catatan hari ini</button>
+  <div class="muted" id="saveMsg" style="margin-top:8px"></div>
+ </div>
+ <div class="notice"><b>Milk supply first.</b> Selama hasil pumping sedang turun, jangan sengaja mengurangi makan atau melewatkan sesi menyusui/pumping. Hasil pumping bukan ukuran tunggal total produksi ASI karena DBF tidak terukur.</div>
+</section>
+
+<section id="menu" class="panel">
+ <div class="section-title">30 days meal plan</div><div class="muted">Ide menu rumahan yang di-mix: Indonesian, Asian & Western. Porsi fleksibel mengikuti lapar dan kebutuhan menyusui.</div>
+ <div class="card">
+  <div class="row"><b id="mealDayTitle">Day 1</b><span class="pill">Meal inspiration</span></div>
+  <div class="daygrid" id="dayGrid"></div>
+  <div id="mealContent"></div>
+  <div class="card" style="background:#f7f8f3;margin-top:12px">
+   <b>Portion guide · gramasi awal</b>
+   <div class="meal"><b>Breakfast</b><p>Oat 40 g atau roti 60 g; telur 2 butir (±100 g); buah 100–150 g; susu 200 ml bila ada.</p></div>
+   <div class="meal"><b>Lunch</b><p>Nasi matang 150 g; ayam/ikan/daging matang 120–150 g; sayuran 150–200 g; tahu/tempe 50–75 g bila lauk utama kurang.</p></div>
+   <div class="meal"><b>Dinner</b><p>Nasi matang 100–150 g atau kentang/ubi 150–200 g; protein matang 120–150 g; sayuran 150–200 g.</p></div>
+   <div class="meal"><b>Each snack</b><p>Buah 100–150 g + yogurt 150 g, atau susu 200–250 ml, atau kacang 15–20 g. Tambah snack bila lapar.</p></div>
+   <p class="muted">Gramasi adalah panduan porsi, bukan batas wajib. Berat nasi adalah setelah matang; protein juga ditimbang setelah dimasak. Sesuaikan kebutuhan dan rasa lapar.</p>
+  </div>
+  <div class="notice" style="margin-top:12px">Porsi fleksibel. Karena supply ASI sedang turun, jangan gunakan gramasi ini untuk mengurangi makan secara agresif. Meal plan adalah inspirasi, bukan diet ketat.</div>
+ </div>
+</section>
+
+<section id="progress" class="panel">
+ <div class="section-title">Your progress</div><div class="muted">Lihat catatan yang sudah kamu simpan di perangkat ini.</div>
+ <div class="card">
+  <div class="grid2">
+   <div><label class="label">Starting weight (kg)</label><input id="startWeight" type="number" step=".1" value="68"></div>
+   <div><label class="label">Goal weight (kg)</label><input id="goalWeight" type="number" step=".1" value="63"></div>
+  </div>
+  <button class="secondary" id="saveGoals" style="margin-top:10px">Update target</button>
+  <div class="row" style="margin-top:16px"><span class="muted">Latest recorded weight</span><b id="latestWeight">—</b></div>
+  <div class="row" style="margin:8px 0"><span class="muted">Latest pumping total</span><b id="latestPump">—</b></div>
+  <div class="bar"><i id="progressBar"></i></div>
+  <div class="muted" id="progressText" style="margin-top:7px">Mulai catat harianmu.</div>
+ </div>
+ <div class="card"><b>Saved daily records</b><div id="recordsList" class="muted" style="margin-top:8px">Belum ada catatan.</div><button class="secondary" id="exportCsv" style="margin-top:12px">Export CSV</button></div>
+</section>
+
+
+<section id="calories" class="panel">
+ <div class="section-title">Calorie & food tracker</div>
+ <div class="muted">Catat makanan, gramasi, dan estimasi kalori. Gunakan sebagai awareness, bukan untuk menahan lapar.</div>
+ <div class="card">
+  <div class="row"><b>Daily calorie log</b><span class="pill">Estimasi</span></div>
+  <div class="grid2" style="margin-top:12px">
+   <div><label class="label">Nama makanan</label><input id="foodName" placeholder="Contoh: nasi putih matang"></div>
+   <div><label class="label">Waktu makan</label><select id="foodMeal"><option>Breakfast</option><option>Snack 1</option><option>Lunch</option><option>Snack 2</option><option>Dinner</option></select></div>
+   <div><label class="label">Berat makanan (gram)</label><input id="foodGrams" type="number" min="0" placeholder="150"></div>
+   <div><label class="label">Kalori per 100 g</label><input id="foodPer100" type="number" min="0" placeholder="130"></div>
+  </div>
+  <div class="notice" style="margin-top:10px">Contoh estimasi: nasi putih matang ±130 kcal/100 g; dada ayam matang tanpa kulit ±165 kcal/100 g; telur rebus ±155 kcal/100 g; pisang ±89 kcal/100 g. Nilai bisa berbeda sesuai bahan dan cara masak.</div>
+  <div class="row" style="margin-top:12px"><span class="muted">Estimasi kalori item</span><b id="foodEstimate">0 kcal</b></div>
+  <button class="primary" id="addFood">Tambah makanan</button>
+ </div>
+ <div class="card">
+  <div class="row"><b>Total hari ini</b><span class="pill" id="calorieDay">Day 1</span></div>
+  <div style="font:26px Georgia,serif;margin:10px 0" id="calorieTotal">0 kcal</div>
+  <div class="bar"><i id="calorieBar"></i></div>
+  <div class="muted" id="calorieNote" style="margin-top:8px">Catat makanan untuk melihat estimasi total harian.</div>
+  <div id="foodEntries" style="margin-top:10px"></div>
+ </div>
+ <div class="notice"><b>Catatan busui:</b> kebutuhan energi saat menyusui bervariasi dan DBF tidak bisa diukur dari tracker ini. Karena hasil pumping sedang menurun, jangan mengejar angka kalori rendah atau menjadikan 2.000–2.200 kcal sebagai batas maksimum. Makan saat lapar dan konsultasikan kebutuhan personal dengan dokter/dietisien atau konselor laktasi.</div>
+</section>
+
+<section id="shopping" class="panel">
+ <div class="section-title">Weekly shopping list</div><div class="muted">Checklist bahan dasar supaya meal prep lebih mudah.</div>
+ <div class="card" id="shoppingList"></div>
+ <div class="notice">Checklist belanja tersimpan di browser perangkat ini. Sesuaikan jumlah dengan anggota keluarga dan menu yang dipilih.</div>
+</section>
+<div class="footer">Aplikasi ini menyimpan data secara lokal di browser perangkat. Hapus data browser dapat menghapus catatan. Untuk keamanan, export CSV secara berkala. Bukan pengganti nasihat dokter atau konselor laktasi.</div>
+</main>
+<nav class="tabs">
+ <button class="tab active" data-tab="tracker"><span>☀️</span>Tracker</button>
+ <button class="tab" data-tab="menu"><span>🍽️</span>Meal plan</button>
+ <button class="tab" data-tab="progress"><span>🌿</span>Progress</button>
+ <button class="tab" data-tab="calories"><span>🥑</span>Calories</button>
+ <button class="tab" data-tab="shopping"><span>🛒</span>Shopping</button>
+</nav>
+<script>
+const meals = [
+["Oatmeal pisang + 2 telur rebus","Nasi, ayam bakar, sayur asem, tempe","Sup ikan, nasi, tumis buncis","Yogurt + almond; pepaya"],
+["Roti gandum, omelet keju, jeruk","Nasi, ikan kembung bakar, sayur bening","Chicken teriyaki, nasi, brokoli","Pisang + susu; edamame"],
+["Bubur ayam homemade + telur","Nasi, ayam rica-rica, tumis kangkung","Tumis tahu udang, nasi, wortel","Greek yogurt; apel"],
+["Overnight oats mangga + telur","Nasi, ikan nila, capcay","Beef yakiniku homemade + nasi","Roti gandum; kurma dan susu"],
+["Nasi, telur dadar, tumis bayam","Soto ayam + nasi","Salmon panggang, kentang, salad","Pisang; susu"],
+["Pancake oat + yogurt","Nasi, ayam kecap, sayur sop","Sup tahu telur + nasi + tumis pakcoy","Buah naga; susu"],
+["Roti telur + alpukat","Nasi, pepes ikan, sayur lodeh ringan","Chicken katsu homemade + salad","Yogurt; ubi rebus"],
+["Oatmeal apel kayu manis + telur","Nasi, ayam panggang, tumis sawi","Sop daging, kentang, nasi","Pisang; susu"],
+["Nasi goreng telur homemade + buah","Nasi, ikan tongkol balado, sayur bening","Tofu beef bowl + nasi","Yogurt; edamame"],
+["Roti gandum, scrambled egg, susu","Ayam opor versi santan ringan, nasi, sayur","Ikan kukus jahe, nasi, brokoli","Pepaya; almond"],
+["Greek yogurt, granola, pisang","Nasi, ayam panggang madu, capcay","Sup ayam makaroni dan sayuran","Telur rebus; jeruk"],
+["Bubur kacang hijau + telur","Nasi, ikan goreng air fryer, urap","Beef teriyaki + nasi + sayuran","Susu; buah potong"],
+["Omelet jamur + roti gandum","Nasi, ayam woku, tumis labu","Tumis udang tahu + nasi","Yogurt; pisang"],
+["Oatmeal cokelat + pisang + telur","Nasi, ayam bakar, lalapan, sayur asem","Pasta tuna tomat + salad","Ubi; susu"],
+["Roti gandum isi telur dan keju","Nasi, sop iga, wortel","Ikan panggang, kentang, buncis","Apel; almond"],
+["Nasi, telur ceplok, tumis sayur","Nasi, ayam saus tiram, capcay","Soto daging + nasi","Yogurt; buah naga"],
+["Pancake pisang + susu","Nasi, ikan bakar, tumis kangkung, tahu","Chicken rice bowl + telur","Pepaya; edamame"],
+["Overnight oats stroberi + telur","Nasi, ayam gulai ringan, sayur","Sup salmon tahu + nasi","Susu; pisang"],
+["Bubur ayam + telur","Nasi, beef lada hitam, brokoli","Tahu telur saus kacang + nasi","Yogurt; almond"],
+["Omelet sayur + roti gandum","Nasi, ayam panggang, sayur sop","Udang saus bawang + nasi + pakcoy","Jeruk; ubi"],
+["Oatmeal kurma + susu + telur","Nasi, ikan asam manis, capcay","Chicken mushroom pasta","Pisang; yogurt"],
+["Nasi, telur orak-arik, alpukat","Nasi, ayam rica-rica, tumis buncis","Sup bakso homemade + nasi","Susu; buah potong"],
+["Greek yogurt bowl + roti telur","Nasi, ikan pepes, sayur bening","Beef yakiniku + nasi + wortel","Edamame; pepaya"],
+["Pancake oat + pisang","Nasi, ayam kecap, tahu, sayur sop","Ikan panggang, ubi, salad","Yogurt; almond"],
+["Roti gandum + omelet + buah","Nasi, soto ayam, perkedel","Tofu chicken stir fry + nasi","Susu; pisang"],
+["Oatmeal mangga + telur rebus","Nasi, ikan kembung, tumis bayam","Sup daging sayur + nasi","Buah naga; kacang"],
+["Nasi goreng ayam telur homemade","Nasi, ayam bakar, urap","Tuna pasta + sayur","Yogurt; ubi"],
+["Roti telur alpukat + susu","Nasi, ikan kuah kuning, tumis kangkung","Beef bowl + brokoli + nasi","Apel; almond"],
+["Oatmeal pisang + peanut butter + telur","Nasi, ayam woku, sayur bening","Sup udang tahu + nasi","Susu; pepaya"],
+["Telur dadar, nasi, tumis sayur","Nasi, ayam panggang, capcay","Ikan bakar, kentang, tumis buncis","Greek yogurt; buah"]
+];
+const STORE="lulaMomReset_v1";
+let state=JSON.parse(localStorage.getItem(STORE)||'{"records":{},"shopping":{},"foods":{},"start":68,"goal":63}');
+const $=id=>document.getElementById(id);
+const save=()=>localStorage.setItem(STORE,JSON.stringify(state));
+const daySelect=$("daySelect");
+for(let i=1;i<=30;i++){let o=document.createElement("option");o.value=i;o.textContent="Day "+i;daySelect.append(o)}
+const todayDay=()=>Math.max(1,Math.min(30,Math.ceil((Date.now()-new Date(new Date().getFullYear(),new Date().getMonth(),1).getTime())/86400000)+1));
+daySelect.value=1;
+$("dateLabel").textContent=new Date().toLocaleDateString("id-ID",{day:"numeric",month:"short"});
+function formForDay(d){let r=state.records[d]||{};$("weight").value=r.weight??"";$("water").value=r.water??"";$("pump1").value=r.p1??"";$("pump2").value=r.p2??"";$("pump3").value=r.p3??"";$("dbf").checked=!!r.dbf;$("notes").value=r.notes??"";document.querySelectorAll("[data-meal]").forEach(c=>c.checked=!!(r.meals||[])[Number(c.dataset.meal)]);calcPump()}
+function calcPump(){$("pumpTotal").value=(+($("pump1").value||0)+ +($("pump2").value||0)+ +($("pump3").value||0))+" ml"}
+["pump1","pump2","pump3"].forEach(id=>$(id).addEventListener("input",calcPump));
+daySelect.addEventListener("change",()=>{formForDay(+daySelect.value);renderFoods()});
+$("saveDay").addEventListener("click",()=>{let d=+daySelect.value;state.records[d]={weight:$("weight").value,water:$("water").value,p1:$("pump1").value,p2:$("pump2").value,p3:$("pump3").value,dbf:$("dbf").checked,notes:$("notes").value,meals:[...document.querySelectorAll("[data-meal]")].map(x=>x.checked),date:new Date().toISOString()};save();$("saveMsg").textContent="Tersimpan di perangkat ini ✓";renderProgress()});
+function renderMenu(){let g=$("dayGrid");g.innerHTML="";meals.forEach((m,i)=>{let b=document.createElement("button");b.className="daybtn"+(i===0?" selected":"");b.textContent=i+1;b.onclick=()=>{g.querySelectorAll("button").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");$("mealDayTitle").textContent="Day "+(i+1);let labels=["Breakfast","Lunch","Dinner","Snacks"];let html="";m.forEach((v,j)=>html+=`<div class="meal"><b>${labels[j]}</b><p>${v}</p></div>`);$("mealContent").innerHTML=html};g.append(b)});g.children[0].click()}
+function renderProgress(){let entries=Object.entries(state.records).sort((a,b)=>+a[0]-+b[0]);let last=entries.at(-1)?.[1];$("latestWeight").textContent=last?.weight?last.weight+" kg":"—";$("latestPump").textContent=last?(+last.p1||0)+(+last.p2||0)+(+last.p3||0)+" ml":"—";$("startWeight").value=state.start;$("goalWeight").value=state.goal;$("headStart").textContent=state.start+" kg";if(last?.weight){let pct=Math.max(0,Math.min(100,(state.start-Number(last.weight))/(state.start-state.goal)*100));$("progressBar").style.width=pct+"%";$("progressText").textContent="Sekitar "+Math.round(pct)+"% dari perjalanan target berat tercatat. Ini bukan penilaian keberhasilan menyusui."}let box=$("recordsList");box.innerHTML="";if(!entries.length){box.textContent="Belum ada catatan.";return}entries.reverse().forEach(([d,r])=>{let el=document.createElement("div");el.className="record";el.textContent=`Day ${d} · BB ${r.weight||"—"} kg · Pumping ${(+r.p1||0)+(+r.p2||0)+(+r.p3||0)} ml · ${r.water||0} gelas`;box.append(el)})}
+$("saveGoals").onclick=()=>{state.start=+$("startWeight").value||68;state.goal=+$("goalWeight").value||63;save();renderProgress()};
+$("exportCsv").onclick=()=>{let rows=[["Day","Weight kg","Pumping 1 ml","Pumping 2 ml","Pumping 3 ml","Total pumping ml","Water glasses","DBF","Notes"]];Object.entries(state.records).sort((a,b)=>+a[0]-+b[0]).forEach(([d,r])=>rows.push([d,r.weight,r.p1,r.p2,r.p3,(+r.p1||0)+(+r.p2||0)+(+r.p3||0),r.water,r.dbf?"Yes":"No",r.notes]));let csv=rows.map(r=>r.map(x=>'"'+String(x??"").replaceAll('"','""')+'"').join(",")).join("\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));a.download="lula-mom-progress.csv";a.click();URL.revokeObjectURL(a.href)};
+
+const foodDayKey=()=>String(+daySelect.value);
+function renderFoods(){
+ const list=state.foods[foodDayKey()]||[];
+ const total=list.reduce((s,x)=>s+x.kcal,0);
+ $("calorieDay").textContent="Day "+foodDayKey();
+ $("calorieTotal").textContent=Math.round(total)+" kcal";
+ $("calorieBar").style.width=Math.min(100,total/2200*100)+"%";
+ $("calorieNote").textContent=list.length?`${list.length} item tercatat. Ini estimasi, bukan target atau batas makan.`:"Catat makanan untuk melihat estimasi total harian.";
+ const box=$("foodEntries");box.innerHTML="";
+ list.forEach((x,i)=>{
+  const el=document.createElement("div");el.className="record";
+  const row=document.createElement("div");row.className="row";
+  const left=document.createElement("span");left.textContent=`${x.meal} · ${x.name} (${x.grams} g)`;
+  const right=document.createElement("b");right.textContent=Math.round(x.kcal)+" kcal";
+  row.append(left,right);el.append(row);
+  const del=document.createElement("button");del.className="secondary";del.textContent="Hapus";del.style.marginTop="6px";del.onclick=()=>{state.foods[foodDayKey()].splice(i,1);save();renderFoods()};
+  el.append(del);box.append(el);
+ });
+}
+function estimateFood(){const g=+$("foodGrams").value||0,p=+$("foodPer100").value||0;$("foodEstimate").textContent=Math.round(g*p/100)+" kcal"}
+["foodGrams","foodPer100"].forEach(id=>$(id).addEventListener("input",estimateFood));
+$("addFood").addEventListener("click",()=>{
+ const name=$("foodName").value.trim(),grams=+$("foodGrams").value||0,per=+$("foodPer100").value||0;
+ if(!name||grams<=0||per<=0){$("foodEstimate").textContent="Isi nama, gramasi, dan kcal/100 g";return}
+ state.foods[foodDayKey()] ||= [];
+ state.foods[foodDayKey()].push({name,grams,per100:per,kcal:grams*per/100,meal:$("foodMeal").value});
+ save();$("foodName").value="";$("foodGrams").value="";$("foodPer100").value="";$("foodEstimate").textContent="0 kcal";renderFoods();
+});
+
+const items=["Beras / oats / roti gandum","Telur","Ayam","Ikan (kembung / nila / salmon)","Daging sapi","Tahu & tempe","Susu / yogurt","Sayuran hijau","Brokoli / wortel / buncis","Pisang / pepaya / apel","Almond / edamame","Kentang / ubi"];
+$("shoppingList").innerHTML=items.map((x,i)=>`<label class="checkrow"><input type="checkbox" data-shop="${i}"> ${x}</label>`).join("");
+document.querySelectorAll("[data-shop]").forEach(c=>{c.checked=!!state.shopping[c.dataset.shop];c.addEventListener("change",()=>{state.shopping[c.dataset.shop]=c.checked;save()})});
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".panel").forEach(x=>x.classList.toggle("active",x.id===b.dataset.tab));if(b.dataset.tab==="progress")renderProgress()});
+formForDay(1);renderMenu();renderProgress();renderFoods();
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js"));
+</script>
+</body></html>

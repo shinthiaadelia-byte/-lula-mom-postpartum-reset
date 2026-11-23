@@ -1,0 +1,10 @@
+{
+  "name": "Lula & Mom — Postpartum Reset",
+  "short_name": "Lula & Mom",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f5ef",
+  "theme_color": "#344b40",
+  "description": "Postpartum tracker, milk supply log, meal plan 30 hari.",
+  "icons": []
+}
